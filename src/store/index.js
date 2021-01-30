@@ -53,7 +53,7 @@ export default new Vuex.Store({
   actions: {
     login (_, payload) {
       const { email, password } = payload
-      axios({
+      return axios({
         method: 'POST',
         url: '/login',
         data: {
@@ -61,20 +61,6 @@ export default new Vuex.Store({
           password
         }
       })
-        .then(({ data }) => {
-          localStorage.access_token = data.access_token
-          _.state.Toast.fire({
-            icon: 'success',
-            title: 'Logged in successfully'
-          })
-          router.push('/')
-        })
-        .catch(err => {
-          _.state.Toast.fire({
-            icon: 'error',
-            title: err.response.data.message
-          })
-        })
     },
     register (_, payload) {
       const { email, password } = payload
@@ -101,40 +87,22 @@ export default new Vuex.Store({
         })
     },
     fetchProduct ({ commit }) {
-      axios({
+      return axios({
         method: 'GET',
         url: '/products'
       })
-        .then(({ data }) => {
-          commit('insertProduct', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     fetchBanner ({ commit }) {
-      axios({
+      return axios({
         method: 'GET',
         url: '/banners'
       })
-        .then(({ data }) => {
-          commit('insertBanner', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     fetchCategory ({ commit }) {
-      axios({
+      return axios({
         method: 'GET',
         url: '/categories'
       })
-        .then(({ data }) => {
-          commit('insertCategory', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     fetchCarts ({ commit }) {
       axios({

@@ -1,25 +1,30 @@
 <template>
   <div class="px-5">
-    <div v-if="carts.length < 1">
-      <div class="fs-3">Cart empty</div>
-      <button class="btn btn-outline-success" @click="$router.push('/')">Buy Now</button>
+    <div v-if="isLoading" class="d-flex justify-content-center">
+      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_95DxC2.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
     </div>
-    <table class="table" v-else>
-      <tr>
-        <th class="text-start" width="40%">Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
-        <th>Action</th>
-      </tr>
-      <cart-card v-for="cart in carts" :key="cart.id" :cart="cart"/>
-    </table>
-    <div v-if="carts.length > 0" class="bg-light d-flex justify-content-center align-items-center py-2 px-4">
-      <div>
-        <div class="fs-5 mb-2 fw-bold">Total Payment : {{ totalPayment }}</div>
-        <button class="btn btn-outline-success" @click="checkout">Checkout</button>
+    <template v-else>
+      <div v-if="carts.length < 1">
+        <div class="fs-3">Cart empty</div>
+        <button class="btn btn-outline-success" @click="$router.push('/')">Buy Now</button>
       </div>
-    </div>
+      <table class="table" v-else>
+        <tr>
+          <th class="text-start" width="40%">Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+          <th>Action</th>
+        </tr>
+        <cart-card v-for="cart in carts" :key="cart.id" :cart="cart"/>
+      </table>
+      <div v-if="carts.length > 0" class="bg-light d-flex justify-content-center align-items-center py-2 px-4">
+        <div>
+          <div class="fs-5 mb-2 fw-bold">Total Payment : {{ totalPayment }}</div>
+          <button class="btn btn-outline-success" @click="checkout">Checkout</button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -28,6 +33,11 @@ import CartCard from '../components/CartCard.vue'
 export default {
   components: { CartCard },
   name: 'Cart',
+  data () {
+    return {
+      isLoading: true
+    }
+  },
   computed: {
     carts () {
       return this.$store.getters.sortedCart
@@ -43,6 +53,9 @@ export default {
     checkout () {
       this.$store.dispatch('checkout', this.carts)
     }
+  },
+  created () {
+    setTimeout(() => { this.isLoading = false }, 500)
   },
   beforeRouteEnter (to, from, next) {
     if (to.path === '/cart' && !localStorage.access_token) next({ name: 'Login' })
