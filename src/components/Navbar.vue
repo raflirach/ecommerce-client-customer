@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-light bg-light px-3 fixed-top">
+  <nav class="navbar navbar-light px-3 fixed-top">
     <div class="container-fluid row">
       <a class="navbar-brand col-2" @click="navigate"><i class="fab fa-battle-net"></i> R-COMMERCE</a>
       <form class="d-flex col-7">
@@ -55,6 +55,7 @@ export default {
     },
     access_token (value) {
       this.fetchCarts()
+      this.fetchCategory()
     }
   },
   computed: {
@@ -79,6 +80,12 @@ export default {
     },
     fetchCategory () {
       this.$store.dispatch('fetchCategory')
+        .then(({ data }) => {
+          this.$store.commit('insertCategory', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     changeFilter (category) {
       this.filter = category
@@ -103,7 +110,6 @@ export default {
   },
   updated () {
     this.access_token = localStorage.access_token
-    // this.fetchCarts()
   }
 }
 </script>
@@ -115,6 +121,9 @@ export default {
   }
   nav{
     padding-bottom: 5px !important;
+    background-color: none !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 4px 0 hsla(0, 0%, 0%, 0.2);
   }
   a{
     text-decoration: none;

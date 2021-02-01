@@ -7,8 +7,8 @@
         <div class="price">{{ price }}</div>
         <button
           @click.prevent="addToCart"
-          class="btn btn-sm btn-outline-primary"
-        ><i class="fas fa-cart-plus"></i></button>
+          class="btn btn-sm btn-primary"
+        ><i class="fas fa-cart-plus"></i> add to cart</button>
       </div>
     </div>
   </div>
@@ -41,6 +41,22 @@ export default {
     padding: 0 !important;
     height: 280px;
     border: 1px solid #e3e3e3;
+  }
+  .card button{
+    display: none;
+    transform: translate(-6px, 23px);
+    z-index: 100;
+    width: 101.5%;
+    position: absolute;
+    border: 1.5px 1.5px 0 1.5px solid blue;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+  }
+  .card:hover{
+    border: 1.5px solid blue;
+  }
+  .card:hover button{
+    display: block;
   }
   img{
     width: 100%;
